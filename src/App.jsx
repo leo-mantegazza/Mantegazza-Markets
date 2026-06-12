@@ -49,10 +49,17 @@ function SectorsSection({ data }) {
 function NewsSection({ data }) {
   const arr = Array.isArray(data) ? data : [];
   const sentMap = { positive: "success", negative: "danger", neutral: "warning" };
+  const typeMap = { "M&A": "warning", "Earnings": "info", "Macro": "info", "Geopolitical": "danger", "IPO": "success" };
   return <div><h2 className="section-title">Major weekly news</h2>
     <div className="flex-col gap-sm">{arr.map((n, i) => (
       <Card key={i}>
-        <div className="row-between mb-sm"><p className="headline">{n.headline}</p><Badge type={sentMap[n.sentiment] || "info"}>{n.sentiment}</Badge></div>
+        <div className="row-between mb-sm" style={{ gap: 12 }}>
+          <p className="headline">{n.headline}</p>
+          <div className="row gap-xs" style={{ flexShrink: 0 }}>
+            {n.type && <Badge type={typeMap[n.type] || "info"}>{n.type}</Badge>}
+            <Badge type={sentMap[n.sentiment] || "info"}>{n.sentiment}</Badge>
+          </div>
+        </div>
         <div className="row gap-sm mb-sm"><Badge type="info">{n.sector}</Badge><span className="small muted">{n.date}</span></div>
         <p className="small muted">→ {n.impact}</p>
       </Card>
@@ -62,12 +69,14 @@ function NewsSection({ data }) {
 
 function CatalystsSection({ data }) {
   const arr = Array.isArray(data) ? data : [];
-  const catMap = { Fed: "danger", CPI: "warning", IPO: "success", Earnings: "info", Geopolitical: "warning", Election: "info", Other: "info" };
+  const catMap = { Fed: "danger", CPI: "warning", IPO: "success", Earnings: "info", Geopolitical: "warning", Election: "info", "M&A": "warning", Other: "info" };
   const impactColor = { high: "#ef4444", medium: "#f59e0b", low: "#22c55e" };
   return <div><h2 className="section-title">Next catalysts</h2>
     <div className="flex-col gap-sm">{arr.map((c, i) => (
       <Card key={i} className="catalyst-row">
-        <div className="catalyst-date"><span className="small">{c.date}</span></div>
+        <div className="catalyst-date">
+          <span className="catalyst-date-text">{c.date}</span>
+        </div>
         <div className="catalyst-body">
           <div className="row gap-sm mb-sm"><span className="headline">{c.event}</span><Badge type={catMap[c.category] || "info"}>{c.category}</Badge></div>
           <p className="small muted">{c.detail}</p>
@@ -101,6 +110,21 @@ function StrategySection({ data }) {
   const convColor = { High: "#22c55e", Medium: "#f59e0b", Low: "#ef4444" };
   return <div><h2 className="section-title">Thesis & strategy</h2>
     {data.overview && <Card className="mb-lg"><p className="muted">{data.overview}</p></Card>}
+
+    {data.convictionPicks && data.convictionPicks.length > 0 && <>
+      <h3 className="subsection-title">Conviction picks</h3>
+      <div className="grid-4 mb-lg">{data.convictionPicks.map((p, i) => (
+        <div key={i} className="conviction-card">
+          <div className="row-between mb-xs">
+            <span className="ticker">{p.ticker}</span>
+            <span className="dot" style={{ background: convColor[p.conviction] || "#888" }} />
+          </div>
+          <p className="tiny muted mb-xs">{p.theme}</p>
+          <p style={{ fontSize: 11, color: "#555", lineHeight: 1.5 }}>{p.rationale}</p>
+        </div>
+      ))}</div>
+    </>}
+
     {data.calls && <><h3 className="subsection-title">Sector calls</h3>
       <div className="flex-col gap-sm mb-lg">{data.calls.map((c, i) => (
         <Card key={i} className="strategy-row">
@@ -112,12 +136,26 @@ function StrategySection({ data }) {
           </div>
         </Card>
       ))}</div></>}
+
+    {data.watchlist && data.watchlist.length > 0 && <>
+      <h3 className="subsection-title">Names to watch</h3>
+      <Card className="mb-lg">
+        <div className="watch-tickers">{data.watchlist.map((w, i) => (
+          <div key={i} className="watch-ticker-item">
+            <span className="ticker">{w.ticker}</span>
+            <span className="tiny muted">{w.reason}</span>
+          </div>
+        ))}</div>
+      </Card>
+    </>}
+
     {data.risks && <><h3 className="subsection-title">Key risks</h3>
       <div className="flex-col gap-sm mb-lg">{data.risks.map((r, i) => (
         <Card key={i} className="row gap-md"><span style={{ fontSize: 18 }}>⚠️</span>
           <div><p className="bold small mb-xs">{r.risk}</p><p className="small muted">{r.detail}</p></div>
         </Card>
       ))}</div></>}
+
     {data.watchFor && <div className="watch-banner"><span style={{ fontSize: 16 }}>👁</span>
       <div><p className="small bold mb-xs">Watch this week</p><p className="small">{data.watchFor}</p></div>
     </div>}
@@ -175,13 +213,9 @@ export default function App() {
       </nav>
 
       <main className="main">
-        {loading && (
-          <div className="loading-state"><div className="spinner" /><span>Loading...</span></div>
-        )}
+        {loading && <div className="loading-state"><div className="spinner" /><span>Loading...</span></div>}
         {!loading && !dashboardData && (
-          <Card>
-            <p className="muted">No data yet. Visit <a href="/refresh" style={{ color: "#60a5fa" }}>/refresh</a> to generate the dashboard.</p>
-          </Card>
+          <Card><p className="muted">No data yet. Visit <a href="/refresh" style={{ color: "#60a5fa" }}>/refresh</a> to generate the dashboard.</p></Card>
         )}
         {!loading && d && !d.error && (
           <>

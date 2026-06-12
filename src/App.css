@@ -119,9 +119,23 @@ body {
 .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 
 /* Catalyst layout */
-.catalyst-row { display: grid; grid-template-columns: 80px 1fr auto; gap: 16px; align-items: start; }
-.catalyst-date { font-size: 12px; color: #555; padding-top: 2px; }
+.catalyst-row { display: grid; grid-template-columns: 90px 1fr auto; gap: 16px; align-items: start; }
+.catalyst-date { padding-top: 2px; }
+.catalyst-date-text { font-size: 13px; font-weight: 500; color: #e0e0e0; }
 .catalyst-body { flex: 1; }
+
+/* Conviction picks */
+.conviction-card {
+  background: #141414;
+  border: 0.5px solid #1e1e1e;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+}
+
+/* Watchlist tickers */
+.watch-tickers { display: flex; flex-direction: column; gap: 8px; }
+.watch-ticker-item { display: flex; align-items: baseline; gap: 10px; }
+.watch-ticker-item .ticker { min-width: 60px; }
 
 /* Strategy layout */
 .strategy-row { display: flex; align-items: center; gap: 16px; }

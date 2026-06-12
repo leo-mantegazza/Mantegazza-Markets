@@ -6,8 +6,10 @@ const redis = Redis.fromEnv();
 
 const WATCHLIST_SECTORS = [
   "Healthcare", "Financial Services", "Digital Infrastructure",
-  "Machinery & Construction", "Energy", "Semiconductors", "Big Tech", "Cybersecurity"
+  "Machinery & Construction", "Energy", "Semiconductors", "Big Tech", "Cybersecurity", "Fintech"
 ];
+
+const WATCHLIST_TICKERS = "UNH, LLY, JPM, COF, AMZN, GOOGL, NVDA, AMD, MU, SOXX, EQIX, DLR, IREN, CORZ, APLD, VRT, ETN, CRWV, XLE, CAT, WCC, CIBR, PANW, CRWD, HOOD, SOFI, PLTR, SNOW, QQQ, VOO, XLV, XLF, IGV, XLI, XLK";
 
 const SECTOR_ETFS = [
   "XLV (Healthcare)", "XLF (Financial Services)", "IGV (Digital Infrastructure)",
@@ -54,33 +56,33 @@ async function fetchSection(section, thesis) {
   let result = '';
   if (section === 'Overview') {
     result = await callClaude(
-      `You are a financial market analyst. Search for today's market data and return ONLY a raw JSON object with no markdown, no code fences, no explanation. Format exactly: {"indices":[{"name":"S&P 500","value":"5,123","change":0.45},{"name":"Nasdaq","value":"16,234","change":-0.12},{"name":"Dow","value":"38,900","change":0.21},{"name":"VIX","value":"18.2","change":-2.1}],"movers":[{"ticker":"NVDA","sector":"Semiconductors","change":3.2,"note":"brief reason"},{"ticker":"JPM","sector":"Financial Services","change":-1.1,"note":"brief reason"},{"ticker":"XOM","sector":"Energy","change":1.8,"note":"brief reason"},{"ticker":"PANW","sector":"Cybersecurity","change":2.4,"note":"brief reason"},{"ticker":"UNH","sector":"Healthcare","change":-0.9,"note":"brief reason"}],"summary":"2 sentence summary"}`,
-      `Search for today's S&P 500, Nasdaq, Dow Jones, VIX levels and % changes. Also find top movers in: ${WATCHLIST_SECTORS.join(', ')}. Return ONLY the JSON object.`
+      `You are a financial market analyst. Search for today's market data and return ONLY a raw JSON object with no markdown, no code fences. Format: {"indices":[{"name":"S&P 500","value":"5,123","change":0.45},{"name":"Nasdaq","value":"16,234","change":-0.12},{"name":"Dow","value":"38,900","change":0.21},{"name":"VIX","value":"18.2","change":-2.1}],"movers":[{"ticker":"NVDA","sector":"Semiconductors","change":3.2,"note":"brief reason"},{"ticker":"AMZN","sector":"Big Tech","change":1.1,"note":"brief reason"},{"ticker":"EQIX","sector":"Digital Infrastructure","change":0.9,"note":"brief reason"},{"ticker":"UNH","sector":"Healthcare","change":-0.9,"note":"brief reason"},{"ticker":"HOOD","sector":"Fintech","change":2.1,"note":"brief reason"}],"summary":"2 sentence summary"}`,
+      `Search for today's S&P 500, Nasdaq, Dow Jones, VIX levels and % changes. Find top movers among: ${WATCHLIST_TICKERS}. Prioritize movers relevant to AI infrastructure, data centers, healthcare, energy, fintech. Return ONLY the JSON object.`
     );
   } else if (section === 'Sectors') {
     result = await callClaude(
-      `You are a financial analyst. Return ONLY a raw JSON array, no markdown, no code fences. Each item: {"ticker":"XLV","name":"Healthcare","change":0.45,"ytd":3.2,"note":"one-line driver"}`,
+      `You are a financial analyst. Return ONLY a raw JSON array, no markdown. Each item: {"ticker":"XLV","name":"Healthcare","change":0.45,"ytd":3.2,"note":"one-line driver"}`,
       `Get today's % change and YTD return for: ${SECTOR_ETFS}. Return ONLY the JSON array.`
     );
   } else if (section === 'News') {
     result = await callClaude(
-      `You are a financial news analyst. Return ONLY a raw JSON array of 6 items, no markdown. Each: {"headline":"headline","sector":"sector","impact":"US market impact in one sentence","sentiment":"positive|negative|neutral","date":"today or X days ago"}`,
-      `Find top financial news this week for: ${WATCHLIST_SECTORS.join(', ')}. Frame global news as US market impact. Return ONLY the JSON array.`
+      `You are a financial news analyst. Return ONLY a raw JSON array of 8 items, no markdown. Each: {"headline":"headline","sector":"sector","type":"M&A|Earnings|Macro|Geopolitical|IPO|Other","impact":"US market impact in one sentence","sentiment":"positive|negative|neutral","date":"today or X days ago"}. Prioritize news about: AI infrastructure, data centers, energy, healthcare, fintech, cybersecurity, construction/utilities. Always include any significant M&A deals.`,
+      `Find the most important financial news and M&A deals this week relevant to: ${WATCHLIST_TICKERS} and sectors: ${WATCHLIST_SECTORS.join(', ')}. Include global news framed as US market impact. Include any major M&A announcements. Return ONLY the JSON array.`
     );
   } else if (section === 'Catalysts') {
     result = await callClaude(
-      `You are a market analyst. Return ONLY a raw JSON array, no markdown. Each: {"event":"name","date":"date","category":"Fed|CPI|IPO|Earnings|Geopolitical|Election|Other","detail":"why it matters","impact":"high|medium|low"}`,
-      `List next 8 market-moving events: Fed meetings, CPI, IPOs, M&As, key earnings, elections, geopolitical. Return ONLY the JSON array ordered by date.`
+      `You are a market analyst. Return ONLY a raw JSON array, no markdown. Each: {"event":"name","date":"date like Jun 17 or Jul 14","category":"Fed|CPI|IPO|Earnings|Geopolitical|Election|M&A|Other","detail":"why it matters for markets","impact":"high|medium|low"}. Order by date ascending.`,
+      `List the next 10 market-moving events including: Fed meetings, CPI releases, major IPOs (especially SpaceX/SPCX), key earnings for ${WATCHLIST_TICKERS}, M&A deals, elections, geopolitical developments around Iran. Return ONLY the JSON array.`
     );
   } else if (section === 'Macro') {
     result = await callClaude(
-      `You are a macro analyst. Return ONLY a raw JSON object, no markdown. Format: {"rates":[{"label":"Fed Funds Rate","value":"5.25-5.50%","change":null},{"label":"2Y Treasury","value":"4.8%","change":-0.02},{"label":"10Y Treasury","value":"4.4%","change":0.01}],"fx":[{"label":"DXY","value":"104.2","change":0.15},{"label":"BRL/USD","value":"4.97","change":-0.3},{"label":"CNY/USD","value":"7.24","change":0.05},{"label":"EUR/USD","value":"1.082","change":-0.08}],"equities":[{"label":"Ibovespa","value":"128,450","change":0.6},{"label":"CSI 300","value":"3,580","change":-0.8},{"label":"Euro Stoxx 50","value":"4,920","change":0.3},{"label":"Tadawul","value":"11,200","change":0.2}],"commodities":[{"label":"Brent Crude","value":"$82","change":-0.5}],"commentary":"2 sentence macro outlook"}`,
+      `You are a macro analyst. Return ONLY a raw JSON object, no markdown. Format: {"rates":[{"label":"Fed Funds Rate","value":"5.25-5.50%","change":null},{"label":"2Y Treasury","value":"4.8%","change":-0.02},{"label":"10Y Treasury","value":"4.4%","change":0.01}],"fx":[{"label":"DXY","value":"104.2","change":0.15},{"label":"BRL/USD","value":"4.97","change":-0.3},{"label":"CNY/USD","value":"7.24","change":0.05},{"label":"EUR/USD","value":"1.082","change":-0.08}],"equities":[{"label":"Ibovespa","value":"128,450","change":0.6},{"label":"CSI 300","value":"3,580","change":-0.8},{"label":"Euro Stoxx 50","value":"4,920","change":0.3},{"label":"Tadawul","value":"11,200","change":0.2}],"commodities":[{"label":"Brent Crude","value":"$82","change":-0.5}],"commentary":"2 sentence macro outlook focused on rate path and cyclical rotation"}`,
       `Get current Fed Funds Rate, 2Y/10Y Treasury yields, DXY, BRL/USD, CNY/USD, EUR/USD, Ibovespa, CSI 300, Euro Stoxx 50, Tadawul, Brent crude. Return ONLY the JSON object.`
     );
   } else if (section === 'Strategy') {
     result = await callClaude(
-      `You are an investment strategist. Return ONLY a raw JSON object, no markdown. Format: {"overview":"2 sentence overview","calls":[{"sector":"name","stance":"Overweight|Underweight|Neutral","rationale":"1-2 sentences","conviction":"High|Medium|Low"}],"risks":[{"risk":"name","detail":"1 sentence"},{"risk":"name","detail":"1 sentence"},{"risk":"name","detail":"1 sentence"}],"watchFor":"1-2 sentences"}`,
-      `Given this thesis: "${thesis}" and today's market conditions, give sector calls for: ${WATCHLIST_SECTORS.join(', ')}. Return ONLY the JSON object.`
+      `You are an investment strategist. Return ONLY a raw JSON object, no markdown. Format: {"overview":"2 sentence overview","convictionPicks":[{"ticker":"AMZN","theme":"AI Full-Stack","conviction":"High","rationale":"first to show AI gains in earnings via cloud/logistics optimization"},{"ticker":"EQIX","theme":"Data Center REIT","conviction":"High","rationale":"airport of the internet, power moat, 60% of new deals AI-related"},{"ticker":"VRT","theme":"Power Infrastructure","conviction":"High","rationale":"cooling and power for AI data centers, wins regardless of which operator wins"},{"ticker":"HOOD","theme":"Fintech AI","conviction":"Medium","rationale":"agentic AI trading, SpaceX IPO access, PDT removal tailwinds"},{"ticker":"PLTR","theme":"Data Collection","conviction":"Medium","rationale":"enterprise AI data pipeline, government and commercial contracts growing"}],"calls":[{"sector":"name","stance":"Overweight|Underweight|Neutral","rationale":"1-2 sentences tied to thesis","conviction":"High|Medium|Low"}],"watchlist":[{"ticker":"APLD","reason":"high-beta data center operator, capital appreciation focus"},{"ticker":"CRWV","reason":"GPU cloud pure play, AI compute demand"},{"ticker":"SNOW","reason":"data infrastructure for AI pipelines"},{"ticker":"CEG","reason":"nuclear energy for data center power demand"},{"ticker":"ABNB","reason":"cyclical recovery play post-Iran war rate cut"},{"ticker":"FPI","reason":"farmland REIT benefiting from land scarcity vs data center conversion"}],"risks":[{"risk":"name","detail":"1 sentence"},{"risk":"name","detail":"1 sentence"},{"risk":"name","detail":"1 sentence"}],"watchFor":"1-2 sentences on key events this week"}`,
+      `Given this investment thesis: "${thesis}" and today's market conditions, provide strategy. Focus on: AI infrastructure stack (AMZN, GOOGL first movers; EQIX, DLR stability; IREN, CORZ, APLD high-beta; VRT, ETN power/cooling), post-Iran-war cyclical rotation, healthcare structural growth, energy supercycle, fintech AI (HOOD, SOFI). Update conviction picks and watchlist with current news. Return ONLY the JSON object.`
     );
   }
   return extractJSON(result);
@@ -108,12 +110,7 @@ export default async function handler(req, res) {
       }
     }));
 
-    const payload = {
-      data,
-      thesis,
-      updatedAt: new Date().toISOString()
-    };
-
+    const payload = { data, thesis, updatedAt: new Date().toISOString() };
     await redis.set('dashboard_data', payload);
     return res.json({ success: true, updatedAt: payload.updatedAt });
   }

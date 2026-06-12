@@ -1,7 +1,23 @@
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
 
-const DEFAULT_THESIS = "I am bullish on US technology infrastructure, semiconductors, and cybersecurity driven by AI capex cycles. I believe energy transition and defense spending will support industrials. Healthcare and financial services benefit from rate normalization. I am cautious on pure consumer discretionary and overvalued growth names with no path to profitability.";
+const DEFAULT_THESIS = `I manage two portfolios (JPM and Robinhood) focused on stock appreciation over dividends. My core theses:
+
+AI INFRASTRUCTURE STACK: Not betting on AI itself but on what AI needs. First movers on AI gains are full-stack platforms AMZN and GOOGL — they don't rely on third-party contracts and will show AI optimization in upcoming earnings. Behind them: semis (SOXX, AMD, MU) for hardware demand; data center operators split by risk profile — EQIX and DLR for quality/stability with power moats, IREN/CORZ/APLD for high-beta capital appreciation; power/cooling infrastructure VRT and ETN as the true bottleneck winners regardless of which operator wins. Watch CRWV (CoreWeave) as GPU cloud pure play. For data collection feeding robotics/AI pipeline: PLTR (Palantir) and SNOW (Snowflake). Short-term semi hype (SOXX, QQQ) being surfed into SpaceX/Nasdaq momentum but will rotate into data center and power names mid-term.
+
+FARMLAND → DATA CENTER CONVERSION: Data center development is converting agricultural land, driving speculative farmland valuations and reducing food supply. Watch FPI and LAND (farmland REITs) as scarcity beneficiaries. DE (Deere) wins as precision agriculture becomes essential on shrinking productive land.
+
+POST-WAR CYCLICAL ROTATION: End of Iran conflict + new Fed chair with rate-cut history = cyclicals rip. WCC already captured this. Next targets: quality cyclicals in construction (CAT), cybersecurity consolidation (CIBR, PANW, CRWD), and consumer recovery names like ABNB. Watch for M&A in cybersecurity.
+
+HEALTHCARE STRUCTURAL WINNER: Aging US population, job creation concentrated in healthcare, AI-driven logistics optimization. UNH and LLY are core holds.
+
+ENERGY SUPERCYCLE: Half traditional (XLE), half new methods (IREN for Bitcoin/HPC energy, CEG for nuclear). Biden infrastructure bills + data center power demand = multi-year tailwind.
+
+FINTECH AI: HOOD (Robinhood) building toward full financial platform — agentic AI trading, SpaceX IPO access, PDT rule removal. SOFI for AI-underwritten lending. Avoid COIN — too crypto-correlated.
+
+SKEPTICAL ON: Tesla (378x earnings multiple, robotaxi barely exists at scale), pure crypto, and growth names with no path to near-term profitability.
+
+NAMES TO WATCH: PLTR, SNOW, CRWV, VRT, ETN, APLD, SYM, FPI, CEG, ABNB, CRWD, PANW.`;
 
 export default function Refresh() {
   const [password, setPassword] = useState("");
