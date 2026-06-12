@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
 
-const DEFAULT_THESIS = `I manage two portfolios (JPM and Robinhood) focused on stock appreciation over dividends. My core theses:
+const DEFAULT_THESIS = `I manage two portfolios (JPM and Robinhood). I am young, high-risk tolerance, and invest money I don't depend on to live. Stock appreciation is always preferred over dividends.
+
+INVESTMENT STYLE: I operate in two modes. Mode 1 — Tactical short-term hype surf: I identify obvious, time-limited momentum plays (e.g. SpaceX IPO driving Nasdaq, end-of-war cyclical snapback) and go nearly 100% in market to capture them. I am currently in this mode. Mode 2 — Mid/long-term quality: When not surfing a tactical wave, I keep a liquidity reserve (money market) to seize opportunities others miss by being 100% invested. Outside tactical plays, I only invest in quality names with strong fundamentals that match both market momentum and my personal theses. Never chase yield — always chase appreciation.
+
+My core theses:
 
 AI INFRASTRUCTURE STACK: Not betting on AI itself but on what AI needs. First movers on AI gains are full-stack platforms AMZN and GOOGL — they don't rely on third-party contracts and will show AI optimization in upcoming earnings. Behind them: semis (SOXX, AMD, MU) for hardware demand; data center operators split by risk profile — EQIX and DLR for quality/stability with power moats, IREN/CORZ/APLD for high-beta capital appreciation; power/cooling infrastructure VRT and ETN as the true bottleneck winners regardless of which operator wins. Watch CRWV (CoreWeave) as GPU cloud pure play. For data collection feeding robotics/AI pipeline: PLTR (Palantir) and SNOW (Snowflake). Short-term semi hype (SOXX, QQQ) being surfed into SpaceX/Nasdaq momentum but will rotate into data center and power names mid-term.
 
