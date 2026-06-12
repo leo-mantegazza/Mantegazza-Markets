@@ -1,18 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="#0a0a0a"/>
   <rect x="0" y="0" width="1200" height="4" fill="#3b82f6"/>
+  <rect x="0" y="626" width="1200" height="4" fill="#3b82f6"/>
 
-  <!-- M↗M logo — fully centered at x=600 -->
-  <path d="M390 290 L390 210 L440 280 L490 210 L490 290" stroke="#f0f0f0" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M515 275 L555 235" stroke="#60a5fa" stroke-width="8" fill="none" stroke-linecap="round"/>
-  <path d="M533 235 L555 235 L555 257" stroke="#60a5fa" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M580 290 L580 210 L630 280 L680 210 L680 290" stroke="#f0f0f0" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- M↗M logo centered at x=535, y centered around 255 -->
+  <path d="M340 310 L340 220 L395 300 L450 220 L450 310" stroke="#f0f0f0" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M478 292 L522 248" stroke="#60a5fa" stroke-width="9" fill="none" stroke-linecap="round"/>
+  <path d="M498 248 L522 248 L522 272" stroke="#60a5fa" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M550 310 L550 220 L605 300 L660 220 L660 310" stroke="#f0f0f0" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
 
   <!-- Title -->
-  <text x="535" y="370" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="600" fill="#f0f0f0" text-anchor="middle">The Mantegazza Brief</text>
+  <text x="500" y="400" font-family="Arial, Helvetica, sans-serif" font-size="50" font-weight="700" fill="#f0f0f0" text-anchor="middle">The Mantegazza Brief</text>
 
   <!-- Subtitle -->
-  <text x="535" y="420" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#555555" text-anchor="middle">Daily market intelligence · mantegazza.markets</text>
-
-  <rect x="0" y="626" width="1200" height="4" fill="#3b82f6"/>
+  <text x="500" y="455" font-family="Arial, Helvetica, sans-serif" font-size="23" fill="#666666" text-anchor="middle">Daily market intelligence · mantegazza.markets</text>
 </svg>
