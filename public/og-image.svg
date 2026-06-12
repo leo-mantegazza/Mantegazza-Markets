@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+  <rect y="0" width="1200" height="4" fill="#3b82f6"/>
+  <text x="600" y="260" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="#f0f0f0" text-anchor="middle">M↗M</text>
+  <text x="600" y="360" font-family="Arial, sans-serif" font-size="52" font-weight="500" fill="#f0f0f0" text-anchor="middle">The Mantegazza Brief</text>
+  <text x="600" y="420" font-family="Arial, sans-serif" font-size="24" fill="#666666" text-anchor="middle">Daily market intelligence · mantegazza.markets</text>
+  <rect y="626" width="1200" height="4" fill="#3b82f6"/>
+</svg>
