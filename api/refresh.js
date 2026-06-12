@@ -1,5 +1,7 @@
 import { Redis } from '@upstash/redis';
 
+export const maxDuration = 300;
+
 const redis = Redis.fromEnv();
 
 const WATCHLIST_SECTORS = [
@@ -68,7 +70,7 @@ async function fetchSection(section, thesis) {
   } else if (section === 'Catalysts') {
     result = await callClaude(
       `You are a market analyst. Return ONLY a raw JSON array, no markdown. Each: {"event":"name","date":"date","category":"Fed|CPI|IPO|Earnings|Geopolitical|Election|Other","detail":"why it matters","impact":"high|medium|low"}`,
-      `List next 8 market-moving events: Fed meetings, CPI, IPOs, key earnings, elections, geopolitical. Return ONLY the JSON array ordered by date.`
+      `List next 8 market-moving events: Fed meetings, CPI, IPOs, M&As, key earnings, elections, geopolitical. Return ONLY the JSON array ordered by date.`
     );
   } else if (section === 'Macro') {
     result = await callClaude(
@@ -98,13 +100,13 @@ export default async function handler(req, res) {
     const sections = ['Overview', 'Sectors', 'News', 'Catalysts', 'Macro', 'Strategy'];
     const data = {};
 
-    for (const section of sections) {
+    await Promise.all(sections.map(async section => {
       try {
         data[section] = await fetchSection(section, thesis);
       } catch (e) {
         data[section] = { error: true };
       }
-    }
+    }));
 
     const payload = {
       data,
