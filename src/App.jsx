@@ -40,8 +40,7 @@ function extractJSON(text) {
 }
 
 async function callClaude(systemPrompt, userPrompt) {
-  const res = await fetch("http://localhost:3001/api/claude", {
-    method: "POST",
+  const res = await fetch("/api/claude", {    method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       model: "claude-sonnet-4-6",
