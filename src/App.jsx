@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-const SECTIONS = ["Overview", "Sectors", "News", "Catalysts", "Macro", "Strategy"];
+const SECTIONS = ["Overview", "Sectors", "Macro", "News", "Catalysts", "Strategy"];
 const SECTION_ICONS = { Overview: "📈", Sectors: "🏭", News: "📰", Catalysts: "📅", Macro: "🌐", Strategy: "💡" };
 
 function ChangeChip({ value }) {
@@ -149,7 +149,7 @@ export default function App() {
     <div className="app">
       <header className="header">
         <div>
-          <h1 className="site-title">Market intelligence</h1>
+          <h1 className="site-title">The Mantegazza Brief</h1>
           <p className="site-date">
             {updatedAt
               ? `Updated ${new Date(updatedAt).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}`
