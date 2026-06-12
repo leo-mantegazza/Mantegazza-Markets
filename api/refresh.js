@@ -54,6 +54,7 @@ function extractJSON(text) {
 
 async function fetchSection(section, thesis) {
   let result = '';
+
   if (section === 'Overview') {
     result = await callClaude(
       `You are a financial market analyst. Search for today's market data and return ONLY a raw JSON object with no markdown, no code fences. Format: {"indices":[{"name":"S&P 500","value":"5,123","change":0.45},{"name":"Nasdaq","value":"16,234","change":-0.12},{"name":"Dow","value":"38,900","change":0.21},{"name":"VIX","value":"18.2","change":-2.1}],"movers":[{"ticker":"NVDA","sector":"Semiconductors","change":3.2,"note":"brief reason"},{"ticker":"AMZN","sector":"Big Tech","change":1.1,"note":"brief reason"},{"ticker":"EQIX","sector":"Digital Infrastructure","change":0.9,"note":"brief reason"},{"ticker":"UNH","sector":"Healthcare","change":-0.9,"note":"brief reason"},{"ticker":"HOOD","sector":"Fintech","change":2.1,"note":"brief reason"}],"summary":"2 sentence summary"}`,
@@ -81,10 +82,22 @@ async function fetchSection(section, thesis) {
     );
   } else if (section === 'Strategy') {
     result = await callClaude(
-      `You are an investment strategist. Return ONLY a raw JSON object, no markdown. Format: {"overview":"2 sentence overview","convictionPicks":[{"ticker":"AMZN","theme":"AI Full-Stack","conviction":"High","rationale":"first to show AI gains in earnings via cloud/logistics optimization"},{"ticker":"EQIX","theme":"Data Center REIT","conviction":"High","rationale":"airport of the internet, power moat, 60% of new deals AI-related"},{"ticker":"VRT","theme":"Power Infrastructure","conviction":"High","rationale":"cooling and power for AI data centers, wins regardless of which operator wins"},{"ticker":"HOOD","theme":"Fintech AI","conviction":"Medium","rationale":"agentic AI trading, SpaceX IPO access, PDT removal tailwinds"},{"ticker":"PLTR","theme":"Data Collection","conviction":"Medium","rationale":"enterprise AI data pipeline, government and commercial contracts growing"}],"calls":[{"sector":"name","stance":"Overweight|Underweight|Neutral","rationale":"1-2 sentences tied to thesis","conviction":"High|Medium|Low"}],"watchlist":[{"ticker":"APLD","reason":"high-beta data center operator, capital appreciation focus"},{"ticker":"CRWV","reason":"GPU cloud pure play, AI compute demand"},{"ticker":"SNOW","reason":"data infrastructure for AI pipelines"},{"ticker":"CEG","reason":"nuclear energy for data center power demand"},{"ticker":"ABNB","reason":"cyclical recovery play post-Iran war rate cut"},{"ticker":"FPI","reason":"farmland REIT benefiting from land scarcity vs data center conversion"}],"risks":[{"risk":"name","detail":"1 sentence"},{"risk":"name","detail":"1 sentence"},{"risk":"name","detail":"1 sentence"}],"watchFor":"1-2 sentences on key events this week"}`,
-      `Given this investment thesis: "${thesis}" and today's market conditions, provide strategy. The investor is young, high-risk tolerance, focused on stock appreciation not dividends. They operate in two modes: (1) tactical short-term hype surf when momentum is obvious — currently in this mode near 100% invested; (2) mid/long-term quality names with liquidity reserve for opportunistic entries. Distinguish conviction picks between tactical (short-term momentum) and quality (mid/long-term). Focus on: AI infrastructure stack (AMZN, GOOGL first movers; EQIX, DLR stability; IREN, CORZ, APLD high-beta appreciation; VRT, ETN power bottleneck), post-Iran-war cyclical rotation, healthcare structural growth, energy supercycle, fintech AI (HOOD, SOFI). Flag when to consider rotating tactical gains into quality names. Return ONLY the JSON object.`
+      `You are an investment strategist. Return ONLY a raw JSON object, no markdown, no code fences, no explanation. Use exactly this structure:
+{"overview":"string","convictionPicks":[{"ticker":"string","theme":"string","conviction":"High|Medium|Low","rationale":"string"}],"calls":[{"sector":"string","stance":"Overweight|Underweight|Neutral","rationale":"string","conviction":"High|Medium|Low"}],"watchlist":[{"ticker":"string","reason":"string"}],"risks":[{"risk":"string","detail":"string"}],"watchFor":"string"}`,
+      `Investor thesis: "${thesis.slice(0, 800)}"
+
+Using today's market data, return strategy JSON with:
+- overview: 2 sentences on current market stance
+- convictionPicks: 5 tickers from [AMZN,GOOGL,EQIX,VRT,HOOD,PLTR,SOXX,UNH,LLY,IREN] with theme, conviction level, and 1-sentence rationale
+- calls: sector stances for [Healthcare,Financial Services,Digital Infrastructure,Energy,Semiconductors,Big Tech,Cybersecurity,Fintech]
+- watchlist: 6 tickers from [APLD,CRWV,SNOW,CEG,ABNB,FPI,PANW,CRWD,SOFI,ETN] with 1-phrase reason
+- risks: 3 key risks with 1-sentence detail each
+- watchFor: 1-2 sentences on what to monitor this week
+
+Return ONLY the JSON object. No other text.`
     );
   }
+
   return extractJSON(result);
 }
 
