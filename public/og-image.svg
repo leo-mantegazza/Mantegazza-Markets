@@ -1,17 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#0a0a0a"/>
-  <rect x="0" y="0" width="1200" height="4" fill="#3b82f6"/>
-  <rect x="0" y="626" width="1200" height="4" fill="#3b82f6"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+  <rect width="1200" height="1200" fill="#0a0a0a"/>
 
-  <!-- M↗M logo centered at x=535, y centered around 255 -->
-  <path d="M340 310 L340 220 L395 300 L450 220 L450 310" stroke="#f0f0f0" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M478 292 L522 248" stroke="#60a5fa" stroke-width="9" fill="none" stroke-linecap="round"/>
-  <path d="M498 248 L522 248 L522 272" stroke="#60a5fa" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M550 310 L550 220 L605 300 L660 220 L660 310" stroke="#f0f0f0" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- Title -->
-  <text x="500" y="400" font-family="Arial, Helvetica, sans-serif" font-size="50" font-weight="700" fill="#f0f0f0" text-anchor="middle">The Mantegazza Brief</text>
-
-  <!-- Subtitle -->
-  <text x="500" y="455" font-family="Arial, Helvetica, sans-serif" font-size="23" fill="#666666" text-anchor="middle">Daily market intelligence · mantegazza.markets</text>
+  <!-- M↗M logo centered in square -->
+  <path d="M340 640 L340 520 L460 680 L580 520 L580 640" stroke="#f0f0f0" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M620 620 L720 520" stroke="#60a5fa" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <path d="M653 520 L720 520 L720 587" stroke="#60a5fa" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M760 640 L760 520 L880 680 L1000 520 L1000 640" stroke="#f0f0f0" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
