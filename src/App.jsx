@@ -149,7 +149,15 @@ export default function App() {
     <div className="app">
       <header className="header">
         <div>
-          <h1 className="site-title">The Mantegazza Brief</h1>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 32" width="90" height="32">
+              <path d="M4 26 L4 8 L14 20 L24 8 L24 26" stroke="#f0f0f0" strokeWidth="2.2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M32 22 L42 10" stroke="#60a5fa" strokeWidth="2.2" fill="none" strokeLinecap="round"/>
+              <path d="M36 10 L42 10 L42 16" stroke="#60a5fa" strokeWidth="2.2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M50 26 L50 8 L60 20 L70 8 L70 26" stroke="#f0f0f0" strokeWidth="2.2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <h1 className="site-title">The Mantegazza Brief</h1>
+          </div>
           <p className="site-date">
             {updatedAt
               ? `Updated ${new Date(updatedAt).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}`
@@ -179,9 +187,9 @@ export default function App() {
           <>
             {activeSection === "Overview" && <OverviewSection data={d} />}
             {activeSection === "Sectors" && <SectorsSection data={d} />}
+            {activeSection === "Macro" && <MacroSection data={d} />}
             {activeSection === "News" && <NewsSection data={d} />}
             {activeSection === "Catalysts" && <CatalystsSection data={d} />}
-            {activeSection === "Macro" && <MacroSection data={d} />}
             {activeSection === "Strategy" && <StrategySection data={d} />}
           </>
         )}
