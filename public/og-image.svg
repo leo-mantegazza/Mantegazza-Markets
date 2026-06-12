@@ -1,9 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
   <rect width="1200" height="1200" fill="#0a0a0a"/>
 
-  <!-- M↗M logo centered in square -->
-  <path d="M340 640 L340 520 L460 680 L580 520 L580 640" stroke="#f0f0f0" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M620 620 L720 520" stroke="#60a5fa" stroke-width="14" fill="none" stroke-linecap="round"/>
-  <path d="M653 520 L720 520 L720 587" stroke="#60a5fa" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M760 640 L760 520 L880 680 L1000 520 L1000 640" stroke="#f0f0f0" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Total width: 780px, so start at (1200-780)/2 = 210 -->
+  <!-- Left M: x=210 to x=510 (300px wide) -->
+  <path d="M210 680 L210 480 L360 620 L510 480 L510 680"
+        stroke="#f0f0f0" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Arrow: x=550 to x=650 -->
+  <path d="M550 640 L650 540"
+        stroke="#60a5fa" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <path d="M582 540 L650 540 L650 608"
+        stroke="#60a5fa" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Right M: x=690 to x=990 (300px wide) -->
+  <path d="M690 680 L690 480 L840 620 L990 480 L990 680"
+        stroke="#f0f0f0" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
