@@ -21,7 +21,9 @@ FINTECH AI: HOOD (Robinhood) building toward full financial platform — agentic
 
 SKEPTICAL ON: Tesla (378x earnings multiple, robotaxi barely exists at scale), pure crypto, and growth names with no path to near-term profitability.
 
-NAMES TO WATCH: PLTR, SNOW, CRWV, VRT, ETN, APLD, SYM, FPI, CEG, ABNB, CRWD, PANW.`;
+NAMES TO WATCH: PLTR, SNOW, CRWV, VRT, ETN, APLD, SYM, FPI, CEG, ABNB, CRWD, PANW.
+
+PORTFOLIO CONTEXT: Robinhood is being consolidated into 16 long-term single names before August (JPMorgan start date), after which only ETFs can be traded. Core 16: EQIX, IREN, CORZ (data centers), GOOGL, AMZN (software/cloud), PLTR, PANW (security/data), AMD, ARM (semis), HOOD, JPM (financials/fintech), CAT, VRT (construction/power), CEG, ETN (energy/utilities), ABNB (travel). Currently rotating out of SOXX, QQQ, MSFT, MU opportunistically on strength. Also holding BTC and ETH as crypto positions.`;
 
 export default function Refresh() {
   const [password, setPassword] = useState("");

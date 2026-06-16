@@ -5,16 +5,17 @@ export const maxDuration = 300;
 const redis = Redis.fromEnv();
 
 const WATCHLIST_SECTORS = [
-  "Healthcare", "Financial Services", "Digital Infrastructure",
-  "Machinery & Construction", "Energy", "Semiconductors", "Big Tech", "Cybersecurity", "Fintech"
+  "Digital Infrastructure", "Software & Cloud", "Cybersecurity",
+  "Semiconductors", "Fintech", "Machinery & Construction",
+  "Energy & Utilities", "Entertainment & Travel", "Farmland & Agriculture"
 ];
 
-const WATCHLIST_TICKERS = "UNH, LLY, JPM, COF, AMZN, GOOGL, NVDA, AMD, MU, SOXX, EQIX, DLR, IREN, CORZ, APLD, VRT, ETN, CRWV, XLE, CAT, WCC, CIBR, PANW, CRWD, HOOD, SOFI, PLTR, SNOW, QQQ, VOO, XLV, XLF, IGV, XLI, XLK";
+const WATCHLIST_TICKERS = "EQIX, IREN, CORZ, GOOGL, AMZN, PLTR, PANW, AMD, ARM, HOOD, JPM, CAT, VRT, CEG, ETN, ABNB, CRWV, SNOW, SYM, FPI, SOFI, CRWD, APLD, BTC, ETH";
 
 const SECTOR_ETFS = [
-  "XLV (Healthcare)", "XLF (Financial Services)", "IGV (Digital Infrastructure)",
-  "XLI (Machinery & Construction)", "XLE (Energy)", "SOXX (Semiconductors)",
-  "XLK (Big Tech)", "CIBR (Cybersecurity)"
+  "IGV (Software & Cloud)", "CIBR (Cybersecurity)", "SOXX (Semiconductors)",
+  "XLF (Financial Services)", "XLI (Machinery & Construction)",
+  "XLE (Energy)", "XLU (Utilities)", "AIRBNB/Travel (ABNB proxy)"
 ].join(", ");
 
 async function callClaude(systemPrompt, userPrompt) {
@@ -57,23 +58,23 @@ async function fetchSection(section, thesis) {
 
   if (section === 'Overview') {
     result = await callClaude(
-      `You are a financial market analyst. Search for today's market data and return ONLY a raw JSON object with no markdown, no code fences. Format: {"indices":[{"name":"S&P 500","value":"5,123","change":0.45},{"name":"Nasdaq","value":"16,234","change":-0.12},{"name":"Dow","value":"38,900","change":0.21},{"name":"VIX","value":"18.2","change":-2.1}],"movers":[{"ticker":"NVDA","sector":"Semiconductors","change":3.2,"note":"brief reason"},{"ticker":"AMZN","sector":"Big Tech","change":1.1,"note":"brief reason"},{"ticker":"EQIX","sector":"Digital Infrastructure","change":0.9,"note":"brief reason"},{"ticker":"UNH","sector":"Healthcare","change":-0.9,"note":"brief reason"},{"ticker":"HOOD","sector":"Fintech","change":2.1,"note":"brief reason"}],"summary":"2 sentence summary"}`,
-      `Search for today's S&P 500, Nasdaq, Dow Jones, VIX levels and % changes. Find top movers among: ${WATCHLIST_TICKERS}. Prioritize movers relevant to AI infrastructure, data centers, healthcare, energy, fintech. Return ONLY the JSON object.`
+      `You are a financial market analyst. Search for today's market data and return ONLY a raw JSON object with no markdown, no code fences. Format: {"indices":[{"name":"S&P 500","value":"5,123","change":0.45},{"name":"Nasdaq","value":"16,234","change":-0.12},{"name":"Dow","value":"38,900","change":0.21},{"name":"VIX","value":"18.2","change":-2.1}],"movers":[{"ticker":"EQIX","sector":"Data Centers","change":1.2,"note":"brief reason"},{"ticker":"PLTR","sector":"Software","change":2.1,"note":"brief reason"},{"ticker":"IREN","sector":"Data Centers","change":1.8,"note":"brief reason"},{"ticker":"HOOD","sector":"Fintech","change":1.5,"note":"brief reason"},{"ticker":"CEG","sector":"Energy","change":0.9,"note":"brief reason"}],"summary":"2 sentence summary"}`,
+      `Search for today's S&P 500, Nasdaq, Dow Jones, VIX levels and % changes. Find top movers among: ${WATCHLIST_TICKERS}. Prioritize movers from these core holdings: EQIX, IREN, CORZ, GOOGL, AMZN, PLTR, PANW, AMD, ARM, HOOD, JPM, CAT, VRT, CEG, ETN, ABNB. Return ONLY the JSON object.`
     );
   } else if (section === 'Sectors') {
     result = await callClaude(
-      `You are a financial analyst. Return ONLY a raw JSON array, no markdown. Each item: {"ticker":"XLV","name":"Healthcare","change":0.45,"ytd":3.2,"note":"one-line driver"}`,
-      `Get today's % change and YTD return for: ${SECTOR_ETFS}. Return ONLY the JSON array.`
+      `You are a financial analyst. Return ONLY a raw JSON array, no markdown. Each item: {"ticker":"IGV","name":"Software & Cloud","change":0.45,"ytd":3.2,"note":"one-line driver"}`,
+      `Get today's % change and YTD return for: ${SECTOR_ETFS}. Also include individual moves for EQIX (data centers), CEG (nuclear energy), VRT (power infrastructure), HOOD (fintech). Return ONLY the JSON array.`
     );
   } else if (section === 'News') {
     result = await callClaude(
-      `You are a financial news analyst. Return ONLY a raw JSON array of 8 items, no markdown. Each: {"headline":"headline","sector":"sector","type":"M&A|Earnings|Macro|Geopolitical|IPO|Other","impact":"US market impact in one sentence","sentiment":"positive|negative|neutral","date":"today or X days ago"}. Prioritize news about: AI infrastructure, data centers, energy, healthcare, fintech, cybersecurity, construction/utilities. Always include any significant M&A deals.`,
-      `Find the most important financial news and M&A deals this week relevant to: ${WATCHLIST_TICKERS} and sectors: ${WATCHLIST_SECTORS.join(', ')}. Include global news framed as US market impact. Include any major M&A announcements. Return ONLY the JSON array.`
+      `You are a financial news analyst. Return ONLY a raw JSON array of 8 items, no markdown. Each: {"headline":"headline","sector":"sector","type":"M&A|Earnings|Macro|Geopolitical|IPO|Other","impact":"US market impact in one sentence","sentiment":"positive|negative|neutral","date":"today or X days ago"}. Prioritize news about: AI infrastructure, data centers, cybersecurity, energy/nuclear, fintech, construction/utilities, farmland, SpaceX/Nasdaq, Iran ceasefire fallout. Always include any significant M&A deals.`,
+      `Find the most important financial news this week relevant to: ${WATCHLIST_TICKERS} and sectors: ${WATCHLIST_SECTORS.join(', ')}. Prioritize: data center buildout, AI infrastructure spend, post-war cyclical rotation, nuclear energy, fintech disruption, cybersecurity M&A. Include any SpaceX IPO-related market moves. Return ONLY the JSON array.`
     );
   } else if (section === 'Catalysts') {
     result = await callClaude(
       `You are a market analyst. Return ONLY a raw JSON array, no markdown. Each: {"event":"name","date":"date like Jun 17 or Jul 14","category":"Fed|CPI|IPO|Earnings|Geopolitical|Election|M&A|Other","detail":"why it matters for markets","impact":"high|medium|low"}. Order by date ascending.`,
-      `List the next 10 market-moving events including: Fed meetings, CPI releases, major IPOs (especially SpaceX/SPCX), key earnings for ${WATCHLIST_TICKERS}, M&A deals, elections, geopolitical developments around Iran. Return ONLY the JSON array.`
+      `List the next 10 market-moving events including: Fed meetings, CPI releases, major IPOs (especially SpaceX/SPCX), key earnings for ${WATCHLIST_TICKERS}, cybersecurity M&A deals, energy/nuclear policy developments, Iran ceasefire updates, data center capex announcements. Return ONLY the JSON array.`
     );
   } else if (section === 'Macro') {
     result = await callClaude(
@@ -86,13 +87,15 @@ async function fetchSection(section, thesis) {
 {"overview":"string","convictionPicks":[{"ticker":"string","theme":"string","conviction":"High|Medium|Low","rationale":"string"}],"calls":[{"sector":"string","stance":"Overweight|Underweight|Neutral","rationale":"string","conviction":"High|Medium|Low"}],"watchlist":[{"ticker":"string","reason":"string"}],"risks":[{"risk":"string","detail":"string"}],"watchFor":"string"}`,
       `Investor thesis: "${thesis.slice(0, 800)}"
 
+This investor holds a concentrated 16-name long-term Robinhood portfolio (locked in before joining JPMorgan in August) plus crypto (BTC, ETH). Core holdings: EQIX, IREN, CORZ (data centers), GOOGL, AMZN (software/cloud), PLTR, PANW (security/data), AMD, ARM (semis), HOOD, JPM (fintech/financials), CAT, VRT (construction/power), CEG, ETN (energy/utilities), ABNB (travel). Currently transitioning out of SOXX/QQQ/MSFT/MU into these names opportunistically.
+
 Using today's market data, return strategy JSON with:
-- overview: 2 sentences on current market stance
-- convictionPicks: 5 tickers from [AMZN,GOOGL,EQIX,VRT,HOOD,PLTR,SOXX,UNH,LLY,IREN] with theme, conviction level, and 1-sentence rationale
-- calls: sector stances for [Healthcare,Financial Services,Digital Infrastructure,Energy,Semiconductors,Big Tech,Cybersecurity,Fintech]
-- watchlist: 6 tickers from [APLD,CRWV,SNOW,CEG,ABNB,FPI,PANW,CRWD,SOFI,ETN] with 1-phrase reason
-- risks: 3 key risks with 1-sentence detail each
-- watchFor: 1-2 sentences on what to monitor this week
+- overview: 2 sentences on current market stance and where we are in the tactical surf vs. long-term rotation
+- convictionPicks: 5 tickers from core holdings [EQIX, IREN, CORZ, GOOGL, AMZN, PLTR, PANW, AMD, ARM, HOOD, JPM, CAT, VRT, CEG, ETN, ABNB] with theme, conviction level, and 1-sentence rationale grounded in today's market
+- calls: sector stances for [Data Centers, Software & Cloud, Cybersecurity, Semiconductors, Fintech, Construction & Power, Energy & Utilities, Travel & Consumer]
+- watchlist: 6 tickers from watchlist [CRWV, SNOW, SYM, FPI, SOFI, CRWD, APLD] with 1-phrase reason to monitor
+- risks: 3 key risks to this portfolio specifically (semi supply, rate path, geopolitical re-escalation)
+- watchFor: 1-2 sentences on what to monitor this week relevant to these holdings
 
 Return ONLY the JSON object. No other text.`
     );
